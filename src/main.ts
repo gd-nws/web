@@ -7,9 +7,13 @@ import "bulma";
 // @ts-ignore
 import VueGtag from "vue-gtag";
 
-Vue.use(VueGtag, {
-  config: { id: "UA-91643389-1" }
-});
+Vue.use(
+  VueGtag,
+  {
+    config: { id: "UA-91643389-1" }
+  },
+  router
+);
 
 Vue.config.productionTip = false;
 
