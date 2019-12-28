@@ -1,14 +1,32 @@
 <template lang="pug">
-    div#title-container.has-text-left-desktop
-      div.hero.is-medium(
-          :class="heroClass"
-      )
-        div.hero-body
-            div.container
-                h1.title {{title}}
-                h2.subtitle {{subTitle}}
-                p
-                | A machine learning approach to sorting headlines by the positivity or negativity.
+  div#title-container.has-text-left
+    div.hero.is-medium(
+      :class="heroClass"
+    )
+      div.hero-body
+        div.container
+          h1.title {{title}}
+          h2.subtitle {{subTitle}}
+          p
+          | A machine learning approach to sorting headlines by the positivity or negativity.
+          br
+          | Help improve the accuracy of {{title}} by voting on headlines.
+          br
+          div.info-container
+            div.columns.is-mobile.is-vcentered.info
+              div.column.is-narrow
+                button.button.is-primary.is-light
+                  span.icon
+                    i.far.fa-thumbs-up
+              div.column.is-narrow
+                p Marks a headline as positive.
+            div.columns.is-mobile.is-vcentered.info
+              div.column.is-narrow
+                button.button.is-danger.is-light
+                  span.icon
+                    i.far.fa-thumbs-down
+              div.column.is-narrow
+                p Marks a headline as negative.
 </template>
 
 <script>
@@ -47,6 +65,9 @@ export default class TitleView extends Vue {
   }
   .subtitle {
     color: #fdfdfd;
+  }
+  .info-container {
+    margin-top: 5%;
   }
 }
 
