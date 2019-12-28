@@ -23,12 +23,13 @@ export default {
       return this.$store.getters.getHeadlines;
     }
   },
-  mounted() {
-    this.$store.dispatch("fetchHeadlines");
+  async mounted() {
+    await this.$store.dispatch("fetchHeadlines");
+    await this.$store.dispatch("fetchSessionAnnotations");
   },
   methods: {
-    handleSelection: function(event) {
-      this.$store.dispatch("updateSentiment", { sentiment: event });
+    handleSelection: async function(event) {
+      await this.$store.dispatch("updateSentiment", { sentiment: event });
     }
   }
 };

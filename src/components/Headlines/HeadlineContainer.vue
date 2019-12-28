@@ -1,12 +1,12 @@
 <template lang="pug">
   div#headline-container
-    a(
-      :href="headline.link",
-      target="_blank"
-    )
-      div.card
-        div.card-content
-          div.content
+    div.card
+      div.card-content
+        div.content
+          a(
+            :href="headline.link",
+            target="_blank"
+          )
             div.columns.is-vcentered(
               v-if="headline.displayImage"
             )
@@ -30,14 +30,20 @@
                   | {{publishedAt}}
               div.column.has-text-right
                 p {{headline.semanticValue}}
+          HeadlineAnnotation(
+            :headlineId="headline.id",
+          )
 
 </template>
 
 <script>
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Headline } from "@/store/headlines";
+import HeadlineAnnotation from "@/components/Headlines/HeadlineAnnotation";
 
-@Component({})
+@Component({
+  components: { HeadlineAnnotation }
+})
 export default class HeadlineContainer extends Vue {
   @Prop(Headline) headline;
 
@@ -56,6 +62,12 @@ export default class HeadlineContainer extends Vue {
 </script>
 
 <style scoped lang="scss">
+a {
+  color: black;
+  &hover {
+    color: black;
+  }
+}
 .card {
   .image {
     margin: 0;

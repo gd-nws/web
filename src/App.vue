@@ -25,5 +25,9 @@ import FooterContainer from "@/components/Footer/FooterContainer";
 @Component({
   components: { FooterContainer, Navigation, TitleContainer }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  async mounted() {
+    await this.$store.dispatch("fetchSession");
+  }
+}
 </script>

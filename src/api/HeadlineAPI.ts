@@ -2,7 +2,8 @@ import axios from "axios";
 import { Headline } from "@/store/headlines";
 
 export class HeadlineAPI {
-  baseUrl = "https://api.gdnws.co.uk/headlines";
+  // baseUrl = "https://api.gdnws.co.uk/headlines";
+  baseUrl = "http://localhost/headlines";
   async getHeadlines(sentiment: string): Promise<Headline[]> {
     const url = `${this.baseUrl}/sentiment/${sentiment}`;
     const response = await axios.get(url);
@@ -19,6 +20,7 @@ export class HeadlineAPI {
         display_image: string;
         published_at: string;
         semantic_value: string;
+        id: number;
       }) => {
         return {
           headline: headline.headline,
@@ -26,7 +28,8 @@ export class HeadlineAPI {
           origin: headline.origin,
           displayImage: headline.display_image,
           publishedAt: new Date(headline.published_at),
-          semanticValue: headline.semantic_value
+          semanticValue: headline.semantic_value,
+          id: headline.id
         };
       }
     );
