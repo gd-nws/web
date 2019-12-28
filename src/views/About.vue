@@ -16,7 +16,7 @@
         h4.is-size-4 Upcoming Features
         p
           ol
-            li Allowing user headline annotation to improve classifier accuracy.
+            li.completed Allowing user headline annotation to improve classifier accuracy.
             li User accounts to store favourite headlines.
             li Sharing headlines to social media.
 </template>
@@ -25,5 +25,9 @@
 #about {
   margin-top: 2.5%;
   margin-bottom: 2.5%;
+
+  .completed {
+    text-decoration: line-through;
+  }
 }
 </style>

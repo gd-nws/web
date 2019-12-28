@@ -2,8 +2,7 @@ import axios from "axios";
 import { Headline } from "@/store/headlines";
 
 export class HeadlineAPI {
-  // baseUrl = "https://api.gdnws.co.uk/headlines";
-  baseUrl = "http://localhost/headlines";
+  baseUrl = "https://api.gdnws.co.uk/headlines";
   async getHeadlines(sentiment: string): Promise<Headline[]> {
     const url = `${this.baseUrl}/sentiment/${sentiment}`;
     const response = await axios.get(url);

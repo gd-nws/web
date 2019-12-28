@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export class SessionAPI {
-  baseUrl = "http://localhost/sessions";
+  baseUrl = "https://api.gdnws.co.uk/sessions";
 
   async fetchSession() {
     let response;

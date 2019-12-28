@@ -6,7 +6,7 @@ interface AnnotationPayload {
 }
 
 export class AnnotationsAPI {
-  baseUrl = "http://localhost/annotations";
+  baseUrl = "https://api.gdnws.co.uk/annotations";
   async getAnnotationsForSessions(sessionToken: string): Promise<Annotation[]> {
     let response: AxiosResponse;
     try {
