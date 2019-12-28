@@ -52,6 +52,10 @@ export default class HeadlineAnnotation extends Vue {
       annotation,
       headlineId: this.headlineId
     });
+
+    const eventPayload = {};
+    eventPayload[annotation] = this.headlineId;
+    this.$gtag.event("annotate", eventPayload);
   }
 }
 </script>
