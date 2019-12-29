@@ -28,12 +28,11 @@
                   |
                   br
                   | {{publishedAt}}
+                HeadlineAnnotation(
+                  :headlineId="headline.id",
+                )
               div.column.has-text-right
-                p {{headline.semanticValue}}
-          HeadlineAnnotation(
-            :headlineId="headline.id",
-          )
-
+                p.is-size-5 {{headline.semanticValue}}
 </template>
 
 <script>
