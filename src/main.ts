@@ -6,7 +6,9 @@ import "bulma";
 
 // @ts-ignore
 import VueGtag from "vue-gtag";
+import Meta from "vue-meta";
 
+Vue.use(Meta);
 Vue.use(
   VueGtag,
   {
