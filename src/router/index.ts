@@ -11,6 +11,12 @@ const routes = [
     component: HeadlineView
   },
   {
+    path: "/cookie-policy",
+    name: "cookie-policy",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/CookiePolicy.vue")
+  },
+  {
     path: "/about",
     name: "about",
     // route level code-splitting

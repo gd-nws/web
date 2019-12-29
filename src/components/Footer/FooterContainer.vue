@@ -35,10 +35,31 @@
             | Headlines from &nbsp;
             a(href="http://newsapi.org") newsapi.org
             |.
+        cookie-law(
+          theme="blood-orange"
+        )
+          div(
+            slot="message"
+          )
+            p
+            | Good News uses cookies to improve your experience, to read more see the&nbsp;
+            router-link.cookie-link(to="cookie-policy") cookie policy.
 </template>
 
 <script>
+import CookieLaw from "vue-cookie-law";
 export default {
-  name: "FooterContainer"
+  name: "FooterContainer",
+  components: { CookieLaw }
 };
 </script>
+
+<style scoped lang="scss">
+.cookie-link {
+  color: #e76a68;
+
+  &hover {
+    color: white;
+  }
+}
+</style>
