@@ -4,13 +4,15 @@
       div.container
         div.content.has-text-centered
           p
-            |
             strong Good News! &nbsp;
             | by &nbsp;
             a(
               href="https://dwelsh.uk"
             ) Daniel Welsh
-            | . The source code is licensed under the &nbsp;
+            | .
+            br
+            br
+            | The source code is licensed under the &nbsp;
             a(
               href="https://opensource.org/licenses/BSD-3-Clause"
             ) 3-Clause BSD License
@@ -18,13 +20,17 @@
             br
             | Check out the code for the &nbsp;
             a(
-              href="https://github.com/danjwelsh/good-news-api"
-            ) API &nbsp;
-            | and the &nbsp;
+              href="https://github.com/wel-shy/good-news-api"
+            ) API,&nbsp;
             a(
-              href="https://github.com/danjwelsh/good-news-web"
+              href="https://github.com/wel-shy/good-news-web"
             ) website
+            | , and&nbsp;
+            a(
+              href="https://github.com/wel-shy/good-news-classifer"
+            ) classifier
             |!
+            br
             br
             | Headlines from &nbsp;
             a(href="http://newsapi.org") newsapi.org
