@@ -59,6 +59,7 @@ export default class TitleView extends Vue {
 
 <style scoped lang="scss">
 .hero {
+  transition: all 0.5s ease;
   color: white;
   .title {
     color: white;

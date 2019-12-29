@@ -31,8 +31,9 @@ export default class Navigation extends Vue {
 </script>
 
 <style scoped lang="scss">
-#nav {
-  padding: 30px;
+#navigation {
+  transition: all 0.5s ease;
+  padding: 15px;
 }
 .navbar {
   background-color: transparent;

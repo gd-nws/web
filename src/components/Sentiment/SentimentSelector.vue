@@ -35,6 +35,7 @@ export default class HeadlineContainer extends Vue {
 
 <style scoped lang="scss">
 .button {
+  transition: all 0.5s ease;
   margin-right: 1.25%;
   margin-top: 2.5%;
 }
