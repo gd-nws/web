@@ -16,6 +16,9 @@
             router-link.navbar-item(
               to="/about"
             ) About
+            router-link.navbar-item(
+              to="/cookie-policy"
+            ) Cookie Policy
 </template>
 
 <script>
