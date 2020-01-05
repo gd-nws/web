@@ -1,12 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { Annotation } from "@/store/annotations";
 
-interface AnnotationPayload {
-  annotations: { headline_id: number; vote: number }[];
-}
-
 export class AnnotationsAPI {
-  baseUrl = "https://api.gdnws.co.uk/annotations";
+  baseUrl = `${process.env.VUE_APP_GOOD_NEWS_API_URL}/annotations`;
   async getAnnotationsForSessions(sessionToken: string): Promise<Annotation[]> {
     let response: AxiosResponse;
     try {
@@ -18,13 +14,8 @@ export class AnnotationsAPI {
       throw e;
     }
 
-    const { annotations }: AnnotationPayload = response.data;
-    return annotations.map(({ headline_id, vote }) => {
-      return {
-        headlineId: headline_id,
-        vote
-      };
-    });
+    const { annotations } = response.data;
+    return annotations;
   }
 
   async annotateHeadline(
@@ -33,15 +24,11 @@ export class AnnotationsAPI {
     sessionToken: string
   ) {
     const url = `${this.baseUrl}/${headlineId}`;
-
     try {
-      await axios.post(
-        url,
-        {
-          annotation: sentiment
-        },
-        { headers: { "x-session-token": sessionToken } }
-      );
+      await axios.post(url, {
+        annotation: sentiment,
+        sessionToken
+      });
     } catch (e) {
       // TODO: Handle this properly.
       // eslint-disable-next-line no-console

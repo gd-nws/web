@@ -8,12 +8,12 @@
             target="_blank"
           )
             div.columns.is-vcentered(
-              v-if="headline.displayImage"
+              v-if="headline.displayImagePath"
             )
               div.column.is-one-third
                 figure.image.container
                   img(
-                    :src="headline.displayImage",
+                    :src="headline.displayImagePath",
                     alt="Placeholder images"
                   )
               div.column

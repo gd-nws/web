@@ -2,7 +2,8 @@ import axios from "axios";
 import { Headline } from "@/store/headlines";
 
 export class HeadlineAPI {
-  baseUrl = "https://api.gdnws.co.uk/headlines";
+  baseUrl = `${process.env.VUE_APP_GOOD_NEWS_API_URL}/headlines`;
+
   async getHeadlines(sentiment: string): Promise<Headline[]> {
     const url = `${this.baseUrl}/sentiment/${sentiment}`;
     const response = await axios.get(url);
@@ -11,24 +12,23 @@ export class HeadlineAPI {
       throw new Error("Could not fetch headlines");
     }
 
-    return response.data.data.headlines.map(
-      (headline: {
-        headline: string;
-        link: string;
-        origin: string;
-        display_image: string;
-        published_at: string;
-        semantic_value: string;
-        id: number;
-      }) => {
+    const headlines: {
+      headline: string;
+      link: string;
+      origin: string;
+      displayImage: string;
+      publishedAt: string;
+      semanticValue: number;
+      id: number;
+    }[] = response.data.headlines;
+
+    return headlines.map(
+      ({ displayImage, publishedAt, semanticValue, ...rest }) => {
         return {
-          headline: headline.headline,
-          link: headline.link,
-          origin: headline.origin,
-          displayImage: headline.display_image,
-          publishedAt: new Date(headline.published_at),
-          semanticValue: headline.semantic_value,
-          id: headline.id
+          displayImagePath: displayImage,
+          publishedAt: new Date(publishedAt),
+          semanticValue: `${Math.round(semanticValue * 100)}%`,
+          ...rest
         };
       }
     );
