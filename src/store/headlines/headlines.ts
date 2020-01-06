@@ -55,6 +55,25 @@ export const headlines: {
       context.commit("clearHeadlines");
       context.commit("setIsAllHeadlines", { isAllHeadlines: false });
       await context.dispatch("fetchHeadlines");
+    },
+
+    updateHeadlineDate: async (
+      context: HeadlineContext,
+      { incrementValue }: { incrementValue: number }
+    ) => {
+      let newDate: Date;
+      const oldDate: Date = context.getters.getLastHeadlineDate;
+      if (incrementValue > 0) {
+        newDate = new Date(oldDate.setDate(oldDate.getDate() + 1));
+      } else {
+        newDate = new Date(oldDate.setDate(oldDate.getDate() - 1));
+      }
+
+      context.commit("resetHeadlinePage");
+      context.commit("clearHeadlines");
+      context.commit("setIsAllHeadlines", { isAllHeadlines: false });
+      context.commit("setDate", { date: newDate });
+      await context.dispatch("fetchHeadlines");
     }
   },
 

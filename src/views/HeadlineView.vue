@@ -4,6 +4,7 @@
             SentimentSelector.selector(
                 @sentiment-selected="handleSelection($event)"
             )
+            HeadlineDate
             div(
               v-if="headlines.length > 0"
             )
@@ -23,22 +24,33 @@
               v-else
             )
               section.section
-                h3.is-size-3 No headlines yet for today!
+                h3.is-size-3 No headlines found for {{headlineDate}}!
 </template>
 
 <script>
 import HeadlineContainer from "@/components/Headlines/HeadlineContainer.vue";
 import SentimentSelector from "@/components/Sentiment/SentimentSelector";
+import HeadlineDate from "@/components/Headlines/HeadlineDate";
 
 export default {
   name: "HeadlineView",
-  components: { SentimentSelector, HeadlineContainer },
+  components: { HeadlineDate, SentimentSelector, HeadlineContainer },
   computed: {
     headlines() {
       return this.$store.getters.getHeadlines;
     },
     isAllHeadlines() {
       return this.$store.getters.getIsAllHeadlines;
+    },
+    headlineDate() {
+      return this.$store.getters.getLastHeadlineDate.toLocaleDateString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }
+      );
     }
   },
   async mounted() {
