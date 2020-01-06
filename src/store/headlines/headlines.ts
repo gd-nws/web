@@ -10,20 +10,39 @@ export const sentimentValues = {
   NEGATIVE: "negative"
 };
 
-export const headlines = {
+export const headlines: {
+  state: HeadlineState;
+  actions: any;
+  mutations: any;
+  getters: any;
+} = {
   state: {
     headlines: [],
-    sentiment: sentimentValues.POSITIVE
+    sentiment: sentimentValues.POSITIVE,
+    lastDate: new Date(),
+    limit: 10,
+    page: 1,
+    isAllHeadlines: false
   },
 
   actions: {
     fetchHeadlines: async (context: HeadlineContext) => {
       const headlineAPI = new HeadlineAPI();
-      const headlines = await headlineAPI.getHeadlines(
-        context.getters.getSentiment
+      const limit = context.getters.getHeadlineLimit;
+      const page = context.getters.getHeadlinePage;
+      const { count, headlines } = await headlineAPI.getHeadlines(
+        context.getters.getSentiment,
+        limit,
+        page,
+        context.getters.getLastHeadlineDate
       );
 
-      context.commit("setHeadlines", headlines);
+      if (count < page * limit) {
+        context.commit("setIsAllHeadlines", { isAllHeadlines: true });
+      }
+
+      context.commit("updateHeadlines", headlines);
+      context.commit("incrementHeadlinePage");
     },
 
     updateSentiment: async (
@@ -32,21 +51,46 @@ export const headlines = {
     ) => {
       context.commit("setSentiment", sentiment);
       context.commit("setTitle", { sentiment });
+      context.commit("resetHeadlinePage");
+      context.commit("clearHeadlines");
+      context.commit("setIsAllHeadlines", { isAllHeadlines: false });
       await context.dispatch("fetchHeadlines");
     }
   },
 
   mutations: {
-    setHeadlines: (state: HeadlineState, headlines: Headline[]): void => {
-      state.headlines = headlines;
+    updateHeadlines: (state: HeadlineState, headlines: Headline[]): void => {
+      state.headlines = state.headlines.concat(headlines);
+    },
+    clearHeadlines: (state: HeadlineState): void => {
+      state.headlines = [];
     },
     setSentiment: (state: HeadlineState, sentiment: string): void => {
       state.sentiment = sentiment;
+    },
+    setDate: (state: HeadlineState, { date }: { date: Date }): void => {
+      state.lastDate = date;
+    },
+    incrementHeadlinePage: (state: HeadlineState) => {
+      state.page = state.page + 1;
+    },
+    resetHeadlinePage: (state: HeadlineState): void => {
+      state.page = 1;
+    },
+    setIsAllHeadlines: (
+      state: HeadlineState,
+      { isAllHeadlines }: { isAllHeadlines: boolean }
+    ): void => {
+      state.isAllHeadlines = isAllHeadlines;
     }
   },
 
   getters: {
     getHeadlines: (state: HeadlineState): Headline[] => state.headlines,
-    getSentiment: (state: HeadlineState): string => state.sentiment
+    getSentiment: (state: HeadlineState): string => state.sentiment,
+    getHeadlineLimit: (state: HeadlineState): number => state.limit,
+    getHeadlinePage: (state: HeadlineState): number => state.page,
+    getLastHeadlineDate: (state: HeadlineState): Date => state.lastDate,
+    getIsAllHeadlines: (state: HeadlineState): boolean => state.isAllHeadlines
   }
 };

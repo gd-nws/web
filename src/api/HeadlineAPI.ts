@@ -4,15 +4,22 @@ import { Headline } from "@/store/headlines";
 export class HeadlineAPI {
   baseUrl = `${process.env.VUE_APP_GOOD_NEWS_API_URL}/headlines`;
 
-  async getHeadlines(sentiment: string): Promise<Headline[]> {
-    const url = `${this.baseUrl}/sentiment/${sentiment}`;
+  async getHeadlines(
+    sentiment: string,
+    limit: number,
+    page: number,
+    date: Date
+  ): Promise<{ count: number; headlines: Headline[] }> {
+    const url = `${
+      this.baseUrl
+    }/sentiment/${sentiment}?limit=${limit}&page=${page}&date=${date.toISOString()}`;
     const response = await axios.get(url);
 
     if (response.status > 299) {
       throw new Error("Could not fetch headlines");
     }
 
-    const headlines: {
+    type headlineResponse = {
       headline: string;
       link: string;
       origin: string;
@@ -20,17 +27,22 @@ export class HeadlineAPI {
       publishedAt: string;
       semanticValue: number;
       id: number;
-    }[] = response.data.headlines;
+    }[];
+    const headlines: headlineResponse = response.data.headlines;
+    const count: number = response.data.count;
 
-    return headlines.map(
-      ({ displayImage, publishedAt, semanticValue, ...rest }) => {
-        return {
-          displayImagePath: displayImage,
-          publishedAt: new Date(publishedAt),
-          semanticValue: `${Math.round(semanticValue * 100)}%`,
-          ...rest
-        };
-      }
-    );
+    return {
+      count,
+      headlines: headlines.map(
+        ({ displayImage, publishedAt, semanticValue, ...rest }) => {
+          return {
+            displayImagePath: displayImage,
+            publishedAt: new Date(publishedAt),
+            semanticValue: `${Math.round(semanticValue * 100)}%`,
+            ...rest
+          };
+        }
+      )
+    };
   }
 }

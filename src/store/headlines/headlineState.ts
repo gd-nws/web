@@ -11,4 +11,8 @@ export interface Headline {
 export interface HeadlineState {
   headlines: Headline[];
   sentiment: string;
+  lastDate: Date;
+  limit: number;
+  page: number;
+  isAllHeadlines: boolean;
 }
