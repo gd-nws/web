@@ -7,11 +7,31 @@
         role="navigation"
         aria-label="main navigation"
       )
-        div.navbar-menu
-          div.navbar-brand
-            router-link.navbar-item(
-              to="/"
-            ) Good News!
+        div.navbar-brand
+          router-link.navbar-item(
+            to="/"
+          ) Good News!
+
+          a.navbar-burger.burger(
+            role="button",
+            aria-label="menu",
+            :aria-expanded="isExpanded",
+            data-target="navbar-content",
+            :class="{'is-active': isExpanded}",
+            @click="toggleNav"
+          )
+            span(
+              aria-hidden="true"
+            )
+            span(
+              aria-hidden="true"
+            )
+            span(
+              aria-hidden="true"
+            )
+        div#navbar-content.navbar-menu(
+          :class="{'is-active': isExpanded}"
+        )
           div.navbar-start
             router-link.navbar-item(
               to="/about"
@@ -21,14 +41,20 @@
             ) Cookie Policy
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { sentimentValues } from "@/store/headlines";
 
 @Component({})
 export default class Navigation extends Vue {
+  private isExpanded: boolean = false;
+
   get isPositive() {
     return this.$store.getters.getSentiment === sentimentValues.POSITIVE;
+  }
+
+  toggleNav() {
+    this.isExpanded = !this.isExpanded;
   }
 }
 </script>
@@ -45,6 +71,12 @@ export default class Navigation extends Vue {
   }
   .navbar-brand {
     background-color: transparent;
+
+    .burger {
+      color: white;
+    }
+
+    // Navbar brand item.
     .navbar-item {
       /*font-weight: bold;*/
       color: white;
@@ -52,6 +84,33 @@ export default class Navigation extends Vue {
       &.router-link-exact-active {
         color: white;
         font-weight: bold;
+      }
+    }
+  }
+
+  #navbar-content {
+    background-color: transparent;
+    color: white;
+    &.is-active {
+      box-shadow: none;
+      text-align: left;
+      border-bottom: white solid 1px;
+
+      @media only screen and (min-width: 1024px) {
+        border-bottom: none;
+      }
+    }
+    .navbar-start {
+      .navbar-item {
+        color: white;
+        .router-link-active {
+          background-color: transparent;
+        }
+        &.router-link-exact-active {
+          color: white;
+          background-color: transparent;
+          font-weight: bold;
+        }
       }
     }
   }
@@ -66,19 +125,6 @@ export default class Navigation extends Vue {
   a.navbar-item:focus-within {
     background-color: transparent;
     font-weight: bold;
-  }
-  .navbar-start {
-    .navbar-item {
-      color: white;
-      .router-link-active {
-        background-color: transparent;
-      }
-      &.router-link-exact-active {
-        color: white;
-        background-color: transparent;
-        font-weight: bold;
-      }
-    }
   }
 }
 
