@@ -15,4 +15,5 @@ export interface HeadlineState {
   limit: number;
   page: number;
   isAllHeadlines: boolean;
+  selectedHeadline?: Headline;
 }

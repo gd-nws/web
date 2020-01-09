@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import HeadlinesView from "../views/HeadlinesView.vue";
 import HeadlineView from "../views/HeadlineView.vue";
 
 Vue.use(VueRouter);
@@ -8,6 +9,11 @@ const routes = [
   {
     path: "/",
     name: "home",
+    component: HeadlinesView
+  },
+  {
+    path: "/headlines/:id",
+    name: "HeadlineView",
     component: HeadlineView
   },
   {

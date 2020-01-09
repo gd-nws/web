@@ -1,79 +1,42 @@
 <template lang="pug">
-    div#headline-container.has-text-left
-        div.container
-            SentimentSelector.selector(
-                @sentiment-selected="handleSelection($event)"
-            )
-            HeadlineDate
-            div(
-              v-if="headlines.length > 0"
-            )
-              HeadlineContainer(
-                  v-for="headline in headlines",
-                  :key="headline.id"
-                  :headline="headline"
-              )
-              div.has-text-centered.load-more(
-                v-if="!isAllHeadlines"
-              )
-                button.button.is-info(
-                  @click="handleLoadMore"
-                ) Load more
-
-            div.content(
-              v-else
-            )
-              section.section
-                h3.is-size-3 No headlines found for {{headlineDate}}!
+  div#headline-view.has-text-left
+    div.container
+      section.section
+        div.headline-info(
+          v-if="headline"
+        )
+          HeadlineContainer(
+            :headline="headline"
+          )
+        div.not-found(
+          v-else
+        )
+          h3.is-size-3 Headline not found.
 </template>
 
 <script>
-import HeadlineContainer from "@/components/Headlines/HeadlineContainer.vue";
-import SentimentSelector from "@/components/Sentiment/SentimentSelector";
-import HeadlineDate from "@/components/Headlines/HeadlineDate";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import HeadlineContainer from "@/components/Headlines/HeadlineContainer";
 
-export default {
-  name: "HeadlineView",
-  components: { HeadlineDate, SentimentSelector, HeadlineContainer },
-  computed: {
-    headlines() {
-      return this.$store.getters.getHeadlines;
-    },
-    isAllHeadlines() {
-      return this.$store.getters.getIsAllHeadlines;
-    },
-    headlineDate() {
-      return this.$store.getters.getLastHeadlineDate.toLocaleDateString(
-        "en-US",
-        {
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }
-      );
-    }
-  },
-  async mounted() {
-    await this.$store.dispatch("fetchHeadlines");
-    await this.$store.dispatch("fetchSessionAnnotations");
-  },
-  methods: {
-    handleSelection: async function(event) {
-      await this.$store.dispatch("updateSentiment", { sentiment: event });
-    },
-    handleLoadMore: async function() {
-      await this.$store.dispatch("fetchHeadlines");
-    }
+@Component({
+  components: { HeadlineContainer }
+})
+export default class HeadlineView extends Vue {
+  get headline() {
+    return this.$store.getters.getSelectedHeadline;
   }
-};
+
+  /**
+   * Fetch new headline when route is updated.
+   * @param route
+   */
+  @Watch("$route", { immediate: true, deep: true })
+  onPropertyChanged(route) {
+    this.$store.dispatch("fetchHeadline", { id: route.params.id });
+  }
+
+  mounted() {
+    this.$store.dispatch("fetchHeadline", { id: this.$route.params.id });
+  }
+}
 </script>
-
-<style scoped lang="scss">
-.selector {
-  margin-bottom: 2.5%;
-}
-
-.load-more {
-  margin-bottom: 2.5%;
-}
-</style>

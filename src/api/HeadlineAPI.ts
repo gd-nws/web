@@ -1,6 +1,16 @@
 import axios from "axios";
 import { Headline } from "@/store/headlines";
 
+interface RawHeadline {
+  headline: string;
+  link: string;
+  origin: string;
+  displayImage: string;
+  publishedAt: string;
+  semanticValue: number;
+  id: number;
+}
+
 export class HeadlineAPI {
   baseUrl = `${process.env.VUE_APP_GOOD_NEWS_API_URL}/headlines`;
 
@@ -12,37 +22,44 @@ export class HeadlineAPI {
   ): Promise<{ count: number; headlines: Headline[] }> {
     const url = `${
       this.baseUrl
-    }/sentiment/${sentiment}?limit=${limit}&page=${page}&date=${date.toISOString()}`;
+    }/?limit=${limit}&page=${page}&date=${date.toISOString()}&sentiment=${sentiment}`;
     const response = await axios.get(url);
 
     if (response.status > 299) {
       throw new Error("Could not fetch headlines");
     }
 
-    type headlineResponse = {
-      headline: string;
-      link: string;
-      origin: string;
-      displayImage: string;
-      publishedAt: string;
-      semanticValue: number;
-      id: number;
-    }[];
-    const headlines: headlineResponse = response.data.headlines;
+    const headlines: RawHeadline[] = response.data.headlines;
     const count: number = response.data.count;
 
     return {
       count,
-      headlines: headlines.map(
-        ({ displayImage, publishedAt, semanticValue, ...rest }) => {
-          return {
-            displayImagePath: displayImage,
-            publishedAt: new Date(publishedAt),
-            semanticValue: `${Math.round(semanticValue * 100)}%`,
-            ...rest
-          };
-        }
-      )
+      headlines: headlines.map(headline => this.formatHeadline(headline))
+    };
+  }
+
+  async getHeadline(id: number) {
+    const url = `${this.baseUrl}/${id}`;
+    const response = await axios.get(url);
+
+    if (response.status === 404) {
+      return undefined;
+    }
+
+    if (response.status > 499) {
+      throw new Error("Could not fetch headline");
+    }
+
+    return this.formatHeadline(response.data.headline);
+  }
+
+  formatHeadline(headline: RawHeadline): Headline {
+    const { displayImage, publishedAt, semanticValue, ...rest } = headline;
+    return {
+      displayImagePath: displayImage,
+      publishedAt: new Date(publishedAt),
+      semanticValue: `${Math.round(semanticValue * 100)}%`,
+      ...rest
     };
   }
 }

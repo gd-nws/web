@@ -22,7 +22,8 @@ export const headlines: {
     lastDate: new Date(),
     limit: 10,
     page: 1,
-    isAllHeadlines: false
+    isAllHeadlines: false,
+    selectedHeadline: undefined
   },
 
   actions: {
@@ -74,6 +75,17 @@ export const headlines: {
       context.commit("setIsAllHeadlines", { isAllHeadlines: false });
       context.commit("setDate", { date: newDate });
       await context.dispatch("fetchHeadlines");
+    },
+
+    fetchHeadline: async (context: HeadlineContext, { id }: { id: number }) => {
+      let headline;
+      try {
+        headline = await new HeadlineAPI().getHeadline(id);
+      } catch (error) {
+        // TODO: Handle error.
+      }
+
+      context.commit("setSelectedHeadline", { headline });
     }
   },
 
@@ -101,6 +113,12 @@ export const headlines: {
       { isAllHeadlines }: { isAllHeadlines: boolean }
     ): void => {
       state.isAllHeadlines = isAllHeadlines;
+    },
+    setSelectedHeadline: (
+      state: HeadlineState,
+      { headline }: { headline: Headline }
+    ) => {
+      state.selectedHeadline = headline;
     }
   },
 
@@ -110,6 +128,8 @@ export const headlines: {
     getHeadlineLimit: (state: HeadlineState): number => state.limit,
     getHeadlinePage: (state: HeadlineState): number => state.page,
     getLastHeadlineDate: (state: HeadlineState): Date => state.lastDate,
-    getIsAllHeadlines: (state: HeadlineState): boolean => state.isAllHeadlines
+    getIsAllHeadlines: (state: HeadlineState): boolean => state.isAllHeadlines,
+    getSelectedHeadline: (state: HeadlineState): Headline | undefined =>
+      state.selectedHeadline
   }
 };
