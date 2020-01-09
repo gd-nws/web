@@ -34,9 +34,5 @@ export default class HeadlineView extends Vue {
   onPropertyChanged(route) {
     this.$store.dispatch("fetchHeadline", { id: route.params.id });
   }
-
-  mounted() {
-    this.$store.dispatch("fetchHeadline", { id: this.$route.params.id });
-  }
 }
 </script>

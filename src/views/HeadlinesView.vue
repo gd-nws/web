@@ -53,11 +53,6 @@ export default class HeadlinesView extends Vue {
     });
   }
 
-  async mounted() {
-    const { sentiment } = this.$route.query;
-    await this.updateHeadlines(sentiment);
-  }
-
   @Watch("$route", { immediate: true, deep: true })
   async onPropertyChanged(route) {
     const { sentiment } = route.query;
