@@ -43,29 +43,6 @@ const metaDataDescription =
       {
         property: "og:description",
         content: metaDataDescription
-      },
-
-      // Twitter card
-      {
-        name: "twitter:card",
-        content: "summary"
-      },
-      {
-        name: "twitter:site",
-        content: "https://gdnws.co.uk"
-      },
-      { name: "twitter:title", content: "Good News!" },
-      {
-        name: "twitter:description",
-        content: metaDataDescription
-      },
-      { name: "twitter:creator", content: "@wel__shy" },
-
-      // Google / Schema.org markup:
-      { itemprop: "name", content: "Good News!" },
-      {
-        itemprop: "description",
-        content: metaDataDescription
       }
     ]
   }
@@ -73,6 +50,14 @@ const metaDataDescription =
 export default class App extends Vue {
   async mounted() {
     await this.$store.dispatch("fetchSession");
+    await this.$store.dispatch("fetchSessionAnnotations");
+
+    if (this.$route.path === "/") {
+      await this.$router.push({
+        path: "/headlines",
+        query: { sentiment: "positive" }
+      });
+    }
   }
 }
 </script>

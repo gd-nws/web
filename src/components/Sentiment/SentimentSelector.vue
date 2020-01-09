@@ -1,15 +1,15 @@
 <template lang="pug">
-    div#sentiment-selector
-        div.container
-            p.has-text-centered.has-text-left-desktop
-                button.button(
-                    :class="{positive: isPositive}",
-                    @click="sentimentSelected(sentiments.POSITIVE)"
-                ) Good News!
-                button.button(
-                    :class="{negative: !isPositive}",
-                    @click="sentimentSelected(sentiments.NEGATIVE)"
-                ) Bad News!
+div#sentiment-selector
+  div.container
+    p.has-text-centered.has-text-left-desktop
+      button.button(
+        :class="{positive: isPositive}",
+        @click="sentimentSelected(sentiments.POSITIVE)"
+      ) Good News!
+      button.button(
+        :class="{negative: !isPositive}",
+        @click="sentimentSelected(sentiments.NEGATIVE)"
+      ) Bad News!
 </template>
 
 <script>
@@ -26,9 +26,11 @@ export default class HeadlineContainer extends Vue {
     return sentimentValues;
   }
 
-  @Emit()
-  sentimentSelected(sentiment) {
-    return sentiment;
+  async sentimentSelected(sentiment) {
+    await this.$router.push({
+      path: "/headlines",
+      query: { sentiment }
+    });
   }
 }
 </script>
