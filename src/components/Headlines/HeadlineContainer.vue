@@ -30,18 +30,27 @@
                   | {{publishedAt}}
               div.column.has-text-right
                 p.is-size-5 {{headline.semanticValue}}
-          HeadlineAnnotation(
-            :headlineId="headline.id",
-          )
+          div.columns.is-mobile
+            div.column
+              HeadlineAnnotation(
+                :headlineId="headline.id",
+              )
+            div.column.has-text-right
+              ShareHeadline(
+                :id="headline.id",
+                :title="headline.headline",
+                :predictedClass="predictedClass"
+              )
 </template>
 
 <script>
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Headline } from "@/store/headlines";
 import HeadlineAnnotation from "@/components/Headlines/HeadlineAnnotation";
+import ShareHeadline from "@/components/Headlines/ShareHeadline";
 
 @Component({
-  components: { HeadlineAnnotation }
+  components: { ShareHeadline, HeadlineAnnotation }
 })
 export default class HeadlineContainer extends Vue {
   @Prop(Headline) headline;
@@ -56,6 +65,10 @@ export default class HeadlineContainer extends Vue {
       month: "long",
       day: "numeric"
     });
+  }
+
+  get predictedClass() {
+    return this.headline.predictedClass > 0 ? "positive" : "negative";
   }
 }
 </script>
