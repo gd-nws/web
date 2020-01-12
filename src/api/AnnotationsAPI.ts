@@ -23,17 +23,9 @@ export class AnnotationsAPI {
     headlineId: number,
     sessionToken: string
   ) {
-    const url = `${this.baseUrl}/${headlineId}`;
-    try {
-      await axios.post(url, {
-        annotation: sentiment,
-        sessionToken
-      });
-    } catch (e) {
-      // TODO: Handle this properly.
-      // eslint-disable-next-line no-console
-      console.error(e);
-      throw e;
-    }
+    await axios.post(`${this.baseUrl}/${headlineId}`, {
+      annotation: sentiment,
+      sessionToken
+    });
   }
 }

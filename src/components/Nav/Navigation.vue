@@ -9,7 +9,7 @@
       )
         div.navbar-brand
           router-link.navbar-item(
-            to="/"
+            to="/headlines?sentiment=positive"
           ) Good News!
 
           a.navbar-burger.burger(
@@ -44,15 +44,12 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { sentimentValues } from "@/store/headlines";
-
 @Component({})
 export default class Navigation extends Vue {
   private isExpanded: boolean = false;
-
   get isPositive() {
     return this.$store.getters.getSentiment === sentimentValues.POSITIVE;
   }
-
   toggleNav() {
     this.isExpanded = !this.isExpanded;
   }
@@ -61,7 +58,6 @@ export default class Navigation extends Vue {
 
 <style scoped lang="scss">
 #navigation {
-  transition: all 0.5s ease;
   padding: 15px;
 }
 .navbar {
@@ -71,23 +67,19 @@ export default class Navigation extends Vue {
   }
   .navbar-brand {
     background-color: transparent;
-
     .burger {
       color: white;
     }
-
     // Navbar brand item.
     .navbar-item {
       /*font-weight: bold;*/
       color: white;
-
       &.router-link-exact-active {
         color: white;
         font-weight: bold;
       }
     }
   }
-
   #navbar-content {
     background-color: transparent;
     color: white;
@@ -95,7 +87,6 @@ export default class Navigation extends Vue {
       box-shadow: none;
       text-align: left;
       border-bottom: white solid 1px;
-
       @media only screen and (min-width: 1024px) {
         border-bottom: none;
       }
@@ -127,11 +118,9 @@ export default class Navigation extends Vue {
     font-weight: bold;
   }
 }
-
 .positive {
   background-color: hsl(171, 100%, 41%);
 }
-
 .negative {
   background-color: hsl(348, 100%, 61%);
 }
