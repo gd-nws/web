@@ -43,23 +43,25 @@
               )
 </template>
 
-<script>
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { Headline } from "@/store/headlines";
-import HeadlineAnnotation from "@/components/Headlines/HeadlineAnnotation";
-import ShareHeadline from "@/components/Headlines/ShareHeadline";
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { Headline, Sentiment } from "@/store/headlines";
+import HeadlineAnnotation from "./HeadlineAnnotation.vue";
+import ShareHeadline from "./ShareHeadline.vue";
 
 @Component({
   components: { ShareHeadline, HeadlineAnnotation }
 })
 export default class HeadlineContainer extends Vue {
-  @Prop(Headline) headline;
+  @Prop() headline?: Headline;
 
   get origin() {
+    if (!this.headline) return undefined;
     return this.headline.origin.split("-").join(" ");
   }
 
   get publishedAt() {
+    if (!this.headline) return undefined;
     return this.headline.publishedAt.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -68,7 +70,10 @@ export default class HeadlineContainer extends Vue {
   }
 
   get predictedClass() {
-    return this.headline.predictedClass > 0 ? "positive" : "negative";
+    if (!this.headline) return undefined;
+    return this.headline.predictedClass > 0
+      ? Sentiment.POSITIVE
+      : Sentiment.NEGATIVE;
   }
 }
 </script>

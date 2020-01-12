@@ -6,14 +6,20 @@ export interface Headline {
   link: string;
   publishedAt: Date;
   semanticValue: string;
+  predictedClass: number;
 }
 
 export interface HeadlineState {
   headlines: Headline[];
-  sentiment: string;
+  sentiment: Sentiment;
   lastDate: Date;
   limit: number;
   page: number;
   isAllHeadlines: boolean;
   selectedHeadline?: Headline;
+}
+
+export enum Sentiment {
+  POSITIVE = "positive",
+  NEGATIVE = "negative"
 }

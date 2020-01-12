@@ -1,7 +1,11 @@
 import { HeadlineAPI } from "@/api/HeadlineAPI";
 import { State } from "@/store/state";
 import { ActionContext } from "vuex";
-import { Headline, HeadlineState } from "@/store/headlines/headlineState";
+import {
+  Headline,
+  HeadlineState,
+  Sentiment
+} from "@/store/headlines/headlineState";
 
 type HeadlineContext = ActionContext<HeadlineState, State>;
 
@@ -18,7 +22,7 @@ export const headlines: {
 } = {
   state: {
     headlines: [],
-    sentiment: sentimentValues.POSITIVE,
+    sentiment: Sentiment.POSITIVE,
     lastDate: new Date(),
     limit: 10,
     page: 1,
@@ -46,34 +50,32 @@ export const headlines: {
       context.commit("incrementHeadlinePage");
     },
 
-    updateSentiment: async (
+    updateHeadlineContext: async (
       context: HeadlineContext,
-      { sentiment }: { sentiment: string }
-    ) => {
+      {
+        sentiment,
+        date
+      }: {
+        sentiment: Sentiment;
+        date?: Date;
+      }
+    ): Promise<void> => {
+      const s = Object.values(Sentiment).includes(sentiment);
+      if (!s) {
+        return;
+      }
+
+      if (!date) {
+        date = new Date();
+      }
+
       context.commit("setSentiment", sentiment);
       context.commit("setTitle", { sentiment });
       context.commit("resetHeadlinePage");
       context.commit("clearHeadlines");
       context.commit("setIsAllHeadlines", { isAllHeadlines: false });
-      await context.dispatch("fetchHeadlines");
-    },
+      context.commit("setDate", { date });
 
-    updateHeadlineDate: async (
-      context: HeadlineContext,
-      { incrementValue }: { incrementValue: number }
-    ) => {
-      let newDate: Date;
-      const oldDate: Date = context.getters.getLastHeadlineDate;
-      if (incrementValue > 0) {
-        newDate = new Date(oldDate.setDate(oldDate.getDate() + 1));
-      } else {
-        newDate = new Date(oldDate.setDate(oldDate.getDate() - 1));
-      }
-
-      context.commit("resetHeadlinePage");
-      context.commit("clearHeadlines");
-      context.commit("setIsAllHeadlines", { isAllHeadlines: false });
-      context.commit("setDate", { date: newDate });
       await context.dispatch("fetchHeadlines");
     },
 
@@ -96,7 +98,7 @@ export const headlines: {
     clearHeadlines: (state: HeadlineState): void => {
       state.headlines = [];
     },
-    setSentiment: (state: HeadlineState, sentiment: string): void => {
+    setSentiment: (state: HeadlineState, sentiment: Sentiment): void => {
       state.sentiment = sentiment;
     },
     setDate: (state: HeadlineState, { date }: { date: Date }): void => {

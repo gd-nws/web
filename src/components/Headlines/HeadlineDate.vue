@@ -17,9 +17,9 @@
             i.fas.fa-arrow-right
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-@Component()
+@Component({})
 export default class HeadlineContainer extends Vue {
   get date() {
     return this.$store.getters.getLastHeadlineDate.toLocaleDateString("en-US", {
@@ -36,8 +36,17 @@ export default class HeadlineContainer extends Vue {
     );
   }
 
-  async handleDateChange(incrementValue) {
-    await this.$store.dispatch("updateHeadlineDate", { incrementValue });
+  async handleDateChange(incrementValue: number) {
+    const date = this.$store.getters.getLastHeadlineDate;
+    date.setDate(date.getDate() + incrementValue);
+
+    await this.$router.push({
+      path: "/headlines",
+      query: {
+        date: date.toISOString().split("T")[0],
+        sentiment: this.$store.getters.getSentiment
+      }
+    });
   }
 }
 </script>

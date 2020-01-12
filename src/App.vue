@@ -22,6 +22,7 @@ import { Component } from "vue-property-decorator";
 import TitleContainer from "@/components/Title/TitleContainer";
 import Navigation from "@/components/Nav/Navigation";
 import FooterContainer from "@/components/Footer/FooterContainer";
+import { Sentiment } from "@/store/headlines";
 
 const metaDataDescription =
   "A machine learning approach to sorting headlines by the positivity or negativity.";
@@ -55,7 +56,10 @@ export default class App extends Vue {
     if (this.$route.path === "/") {
       await this.$router.push({
         path: "/headlines",
-        query: { sentiment: "positive" }
+        query: {
+          date: new Date().toISOString().split("T")[0],
+          sentiment: Sentiment.POSITIVE
+        }
       });
     }
   }

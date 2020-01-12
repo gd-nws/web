@@ -13,8 +13,8 @@ div#sentiment-selector
 </template>
 
 <script>
-import { Component, Emit, Vue } from "vue-property-decorator";
-import { sentimentValues } from "@/store/headlines";
+import { Component, Vue } from "vue-property-decorator";
+import { Sentiment, sentimentValues } from "@/store/headlines";
 
 @Component({})
 export default class HeadlineContainer extends Vue {
@@ -23,13 +23,18 @@ export default class HeadlineContainer extends Vue {
   }
 
   get sentiments() {
-    return sentimentValues;
+    return Sentiment;
   }
 
   async sentimentSelected(sentiment) {
     await this.$router.push({
       path: "/headlines",
-      query: { sentiment }
+      query: {
+        date: this.$store.getters.getLastHeadlineDate
+          .toISOString()
+          .split("T")[0],
+        sentiment
+      }
     });
   }
 }
