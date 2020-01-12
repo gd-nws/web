@@ -6,6 +6,7 @@ import { ActionContext } from "vuex";
 import { State } from "@/store/state";
 import { AnnotationsAPI } from "@/api/AnnotationsAPI";
 import { sentimentValues } from "@/store/headlines";
+import { MessageLevel } from "@/store/notification";
 
 type AnnotationsContext = ActionContext<AnnotationsState, State>;
 
@@ -70,11 +71,28 @@ export const annotations = {
       }
 
       const annotationsAPI = new AnnotationsAPI();
-      await annotationsAPI.annotateHeadline(
-        payload.annotation,
-        payload.headlineId,
-        sessionToken
-      );
+      let notificationMessage: string | undefined = undefined;
+      let messageLevel = MessageLevel.Info;
+      try {
+        await annotationsAPI.annotateHeadline(
+          payload.annotation,
+          payload.headlineId,
+          sessionToken
+        );
+      } catch (e) {
+        notificationMessage = "Could not annotate headline.";
+        messageLevel = MessageLevel.Error;
+      }
+
+      if (!notificationMessage) {
+        notificationMessage = "Annotated headline";
+      }
+
+      await context.dispatch("displayNotification", {
+        message: notificationMessage,
+        messageLevel,
+        timeout: 3000
+      });
 
       context.commit("addAnnotation", {
         annotation: payload.annotation,

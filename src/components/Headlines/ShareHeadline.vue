@@ -1,20 +1,36 @@
 <template lang="pug">
   div#share-headline
-    a.button.button.is-info(
-      :href="twitterLink"
+    input#hidden-link(
+      type="hidden"
+      name="hidden-link"
+      :value="hyperlink"
+    )
+    Button(
+      @button-clicked="copyLink"
     )
       span.icon
-        i.fab.fa-twitter
+        i.fas.fa-link
+    a#twitter-share(
+      :href="twitterLink"
+    )
+      Button(
+        :messageLevel="messageLevels.info"
+      )
+        span.icon
+          i.fab.fa-twitter
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-@Component({})
+import { MessageLevel } from "@/store/notification";
+import Button from "@/components/Button/Button.vue";
+@Component({
+  components: { Button }
+})
 export default class ShareHeadline extends Vue {
   @Prop() id?: string;
   @Prop() title?: string;
   @Prop() predictedClass?: string;
-
   get twitterLink() {
     const {
       VUE_APP_TWITTER_HASHTAGS: hashtags,
@@ -26,13 +42,52 @@ export default class ShareHeadline extends Vue {
       `Check out this ${this.predictedClass} headline from Good News!\n${this.title}`
     )}&hashtags=${hashtags}&twitterdev=${account}&related=${account}`;
   }
+  get hyperlink() {
+    return `https://gdnws.co.uk/#/headlines/${this.id}`;
+  }
+  get messageLevels() {
+    return {
+      info: MessageLevel.Info
+    };
+  }
+  copyLink() {
+    const el = document.createElement("input");
+    el.type = "text";
+    el.value = this.hyperlink;
+    el.id = "hidden-link";
+    // Set non-editable to avoid focus and move outside of view
+    el.setAttribute("readonly", "");
+    document.body.appendChild(el);
+    /* Select the text field */
+    el.select();
+    el.setSelectionRange(0, 99999); /*For mobile devices*/
+    /* Copy the text inside the text field */
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    this.$store.dispatch("displayNotification", {
+      message: "Copied link to clipboard!",
+      messageLevel: MessageLevel.Info,
+      timeout: 2000
+    });
+  }
 }
 </script>
 
 <style scoped lang="scss">
 #share-headline {
   .button {
-    background-color: #00aced;
+    margin-top: 1%;
+    &:last-child {
+      margin-left: 1%;
+    }
+    &#twitter-share {
+      background-color: #00aced;
+    }
+  }
+  #hidden-link {
+    display: none;
+    position: absolute;
+    left: -9999px;
   }
 }
 </style>

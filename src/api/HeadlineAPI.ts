@@ -9,6 +9,7 @@ interface RawHeadline {
   publishedAt: string;
   semanticValue: number;
   id: number;
+  predictedClass: number;
 }
 
 export class HeadlineAPI {

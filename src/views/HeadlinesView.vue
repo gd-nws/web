@@ -31,7 +31,6 @@ import SentimentSelector from "@/components/Sentiment/SentimentSelector";
 import HeadlineDate from "@/components/Headlines/HeadlineDate";
 
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { sentimentValues } from "@/store/headlines";
 
 @Component({
   components: { HeadlineDate, SentimentSelector, HeadlineContainer }
@@ -56,19 +55,22 @@ export default class HeadlinesView extends Vue {
   @Watch("$route", { immediate: true, deep: true })
   async onPropertyChanged(route) {
     const { sentiment } = route.query;
-    await this.updateHeadlines(sentiment);
+
+    // Format date.
+    let { date } = route.query;
+    date = date ? new Date(date) : new Date();
+    if (date > new Date()) {
+      date = new Date();
+    }
+
+    await this.$store.dispatch("updateHeadlineContext", {
+      date,
+      sentiment
+    });
   }
 
   async handleLoadMore() {
     await this.$store.dispatch("fetchHeadlines");
-  }
-
-  async updateHeadlines(sentiment) {
-    switch (sentiment) {
-      case sentimentValues.NEGATIVE:
-      case sentimentValues.POSITIVE:
-        await this.$store.dispatch("updateSentiment", { sentiment });
-    }
   }
 }
 </script>

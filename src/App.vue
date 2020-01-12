@@ -4,6 +4,7 @@
     TitleContainer
     router-view
     FooterContainer
+    Notification
 </template>
 
 <style lang="scss">
@@ -22,12 +23,14 @@ import { Component } from "vue-property-decorator";
 import TitleContainer from "@/components/Title/TitleContainer";
 import Navigation from "@/components/Nav/Navigation";
 import FooterContainer from "@/components/Footer/FooterContainer";
+import { Sentiment } from "@/store/headlines";
+import Notification from "@/components/Notification/Notification";
 
 const metaDataDescription =
   "A machine learning approach to sorting headlines by the positivity or negativity.";
 
 @Component({
-  components: { FooterContainer, Navigation, TitleContainer },
+  components: { Notification, FooterContainer, Navigation, TitleContainer },
   metaInfo: {
     meta: [
       // OpenGraph data (Most widely used)
@@ -55,7 +58,10 @@ export default class App extends Vue {
     if (this.$route.path === "/") {
       await this.$router.push({
         path: "/headlines",
-        query: { sentiment: "positive" }
+        query: {
+          date: new Date().toISOString().split("T")[0],
+          sentiment: Sentiment.POSITIVE
+        }
       });
     }
   }
