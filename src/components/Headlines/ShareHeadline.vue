@@ -10,14 +10,12 @@
     )
       span.icon
         i.fas.fa-link
-    a#twitter-share(
-      :href="twitterLink"
+    Button#twitter-share(
+      :messageLevel="messageLevels.info"
+      @button-clicked="shareToTwitter"
     )
-      Button(
-        :messageLevel="messageLevels.info"
-      )
-        span.icon
-          i.fab.fa-twitter
+      span.icon
+        i.fab.fa-twitter
 </template>
 
 <script lang="ts">
@@ -31,6 +29,7 @@ export default class ShareHeadline extends Vue {
   @Prop() id?: string;
   @Prop() title?: string;
   @Prop() predictedClass?: string;
+
   get twitterLink() {
     const {
       VUE_APP_TWITTER_HASHTAGS: hashtags,
@@ -42,14 +41,25 @@ export default class ShareHeadline extends Vue {
       `Check out this ${this.predictedClass} headline from Good News!\n${this.title}`
     )}&hashtags=${hashtags}&twitterdev=${account}&related=${account}`;
   }
+
   get hyperlink() {
     return `https://gdnws.co.uk/#/headlines/${this.id}`;
   }
+
   get messageLevels() {
     return {
       info: MessageLevel.Info
     };
   }
+
+  shareToTwitter() {
+    (this as any).$gtag.event("share", { method: "twitter" });
+    const win = window.open(this.twitterLink, "_blank");
+    if (win) {
+      win.focus();
+    }
+  }
+
   copyLink() {
     const el = document.createElement("input");
     el.type = "text";
@@ -69,6 +79,8 @@ export default class ShareHeadline extends Vue {
       messageLevel: MessageLevel.Info,
       timeout: 2000
     });
+
+    (this as any).$gtag.event("share", { method: "url" });
   }
 }
 </script>
