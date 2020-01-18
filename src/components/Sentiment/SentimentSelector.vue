@@ -17,7 +17,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { Sentiment, sentimentValues } from "@/store/headlines";
 
 @Component({})
-export default class HeadlineContainer extends Vue {
+export default class SentimentSelector extends Vue {
   get isPositive() {
     return this.$store.getters.getSentiment === sentimentValues.POSITIVE;
   }
