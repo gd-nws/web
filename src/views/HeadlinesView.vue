@@ -1,11 +1,14 @@
 <template lang="pug">
     div#headlines-view.has-text-left
         div.container
-            SentimentSelector.selector
-            HeadlineDate(
-              :startDate="selectedDate",
-              @date-changed="handleDateChange($event)"
-            )
+            div.columns
+              div.column.is-narrow
+                h3.is-size-3 {{headlineDate}}
+              div.column.has-text-left
+                HeadlineFilters(
+                  :startDate="selectedDate",
+                  @date-changed="handleDateChange($event)"
+                )
             div(
               v-if="headlines.length > 0"
             )
@@ -30,14 +33,13 @@
 
 <script lang="ts">
 import HeadlineContainer from "@/components/Headlines/HeadlineContainer.vue";
-import SentimentSelector from "@/components/Sentiment/SentimentSelector.vue";
-import HeadlineDate from "@/components/Headlines/HeadlineDate.vue";
+import HeadlineFilters from "@/components/Headlines/HeadlineFilters.vue";
 
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Route } from "vue-router";
 
 @Component({
-  components: { HeadlineDate, SentimentSelector, HeadlineContainer }
+  components: { HeadlineFilters, HeadlineContainer }
 })
 export default class HeadlinesView extends Vue {
   selectedDate: string = new Date().toISOString().split("T")[0];
@@ -94,11 +96,14 @@ export default class HeadlinesView extends Vue {
 </script>
 
 <style scoped lang="scss">
-.selector {
-  margin-bottom: 2.5%;
-}
+#headlines-view {
+  padding-top: 2.5%;
+  .selector {
+    margin-bottom: 2.5%;
+  }
 
-.load-more {
-  margin-bottom: 2.5%;
+  .load-more {
+    margin-bottom: 2.5%;
+  }
 }
 </style>
