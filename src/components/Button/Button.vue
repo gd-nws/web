@@ -16,12 +16,14 @@ export default class Button extends Vue {
   @Prop() messageLevel: MessageLevel | undefined;
   @Prop() isDisabled: boolean | undefined;
   @Prop() isLight: boolean | undefined;
+  @Prop() isOutlined: boolean | undefined;
 
   get buttonClass() {
     const className = this.messageLevelClass();
     const c: any = {
       "is-loading": this.isLoading,
-      "is-light": this.isLight
+      "is-light": this.isLight,
+      "is-outlined": this.isOutlined
     };
     c[className] = true;
     return c;
