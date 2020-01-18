@@ -39,11 +39,10 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import Button from "@/components/Button/Button.vue";
-import Sort from "@/components/Sort/Sort.vue";
 import { MessageLevel } from "@/store/notification";
 import { Sentiment, sentimentValues } from "@/store/headlines";
 
-@Component({ components: { Sort, Button } })
+@Component({ components: { Button } })
 export default class HeadlineFilters extends Vue {
   today = new Date().toISOString().split("T")[0];
   @Prop() startDate?: string;
