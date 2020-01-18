@@ -1,7 +1,7 @@
 <template lang="pug">
     div#headlines-view.has-text-left
         div.container
-            div.columns
+            div.columns.info
               div.column.is-narrow
                 h3.is-size-3 {{headlineDate}}
               div.column.has-text-left
@@ -116,6 +116,10 @@ export default class HeadlinesView extends Vue {
 
   .load-more {
     margin-bottom: 2.5%;
+  }
+
+  .info {
+    padding: 2.5%;
   }
 }
 </style>
