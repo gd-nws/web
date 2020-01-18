@@ -92,6 +92,18 @@ export default class HeadlinesView extends Vue {
   async handleLoadMore() {
     await this.$store.dispatch("fetchHeadlines");
   }
+
+  mounted() {
+    window.onscroll = async () => {
+      if (
+        window.innerHeight + window.pageYOffset >=
+          document.body.offsetHeight - 2 &&
+        !this.isAllHeadlines
+      ) {
+        await this.$store.dispatch("fetchHeadlines");
+      }
+    };
+  }
 }
 </script>
 
