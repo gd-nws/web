@@ -54,7 +54,25 @@ export class HeadlineAPI {
     return this.formatHeadline(response.data.headline);
   }
 
-  formatHeadline(headline: RawHeadline): Headline {
+  async searchHeadlines(
+    term: string,
+    limit: number,
+    page: number,
+    sentiment: string
+  ) {
+    const url = `${this.baseUrl}/search?term=${term}&limit=${limit}&page=${page}&sentiment=${sentiment}`;
+    const response = await axios.get(url);
+
+    const headlines: RawHeadline[] = response.data.headlines;
+    const count: number = response.data.count;
+
+    return {
+      count,
+      headlines: headlines.map(headline => this.formatHeadline(headline))
+    };
+  }
+
+  private formatHeadline(headline: RawHeadline): Headline {
     const { displayImage, publishedAt, semanticValue, ...rest } = headline;
     return {
       displayImagePath: displayImage,

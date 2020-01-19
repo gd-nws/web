@@ -34,6 +34,14 @@
         )
           span.icon
             i.fas.fa-sort-amount-up
+      div.control
+        Button(
+          @button-clicked="handleSearch"
+        )
+          span.icon
+            i.fas.fa-search(
+              v-if=""
+            )
 </template>
 
 <script lang="ts">
@@ -101,6 +109,10 @@ export default class HeadlineFilters extends Vue {
 
   handleResize() {
     this.windowWidth = window.innerWidth;
+  }
+
+  handleSearch() {
+    this.$router.push({ path: "/search" });
   }
 }
 </script>

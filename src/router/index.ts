@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HeadlinesView from "../views/HeadlinesView.vue";
 import HeadlineView from "../views/HeadlineView.vue";
+import Search from "../views/Search.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes = [
     path: "/headlines/:id",
     name: "HeadlineView",
     component: HeadlineView
+  },
+  {
+    path: "/search",
+    name: "Search",
+    component: Search
   },
   {
     path: "/cookie-policy",
