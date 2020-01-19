@@ -1,4 +1,4 @@
-import { SearchState } from "./searchState";
+import { SearchState } from "./";
 import { ActionContext } from "vuex";
 import { State } from "@/store/state";
 import { HeadlineAPI } from "@/api/HeadlineAPI";
