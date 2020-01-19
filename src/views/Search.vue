@@ -112,6 +112,7 @@ export default class Search extends Vue {
 
   handleSearch() {
     if (this.term && this.term.length > 0) {
+      (this as any).$gtag.event("search", { search_term: this.term });
       this.$router.push({
         path: "/search",
         query: {
