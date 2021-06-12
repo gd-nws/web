@@ -39,14 +39,13 @@
                 li Sharing headlines to social media.
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 #about {
   margin-top: 2.5%;
   margin-bottom: 2.5%;
-
-  .completed {
-    text-decoration: line-through;
-  }
+}
+#about .completed {
+  text-decoration: line-through;
 }
 </style>
 <script>

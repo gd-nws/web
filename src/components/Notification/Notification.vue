@@ -40,7 +40,7 @@ export default class Notification extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 #notification {
   text-align: left;
   position: fixed;

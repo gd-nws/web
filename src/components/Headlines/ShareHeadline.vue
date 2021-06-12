@@ -85,21 +85,18 @@ export default class ShareHeadline extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-#share-headline {
-  .button {
-    margin-top: 1%;
-    &:last-child {
-      margin-left: 1%;
-    }
-    &#twitter-share {
-      background-color: #00aced;
-    }
-  }
-  #hidden-link {
-    display: none;
-    position: absolute;
-    left: -9999px;
-  }
+<style scoped>
+#share-headline button {
+  margin-top: 1%;
+}
+
+#twitter-share {
+  background-color: #00aced;
+}
+
+#hidden-link {
+  display: none;
+  position: absolute;
+  left: -9999px;
 }
 </style>

@@ -73,13 +73,12 @@ export default class HeadlineAnnotation extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-#headline-annotation {
-  .button {
-    margin-top: 1%;
-    &:first-child {
-      margin-right: 1%;
-    }
-  }
+<style scoped>
+#headline-annotation.button {
+  margin-top: 1%;
+}
+
+#headline-annotation.button:first-child {
+  margin-right: 1%;
 }
 </style>

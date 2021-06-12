@@ -117,14 +117,13 @@ export default class HeadlineFilters extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 #headline-date {
   padding: 2.5%;
-
-  #date-selector {
-    transition: all 0.5s ease;
-  }
-
   margin-bottom: 2.5%;
+}
+
+#headline-date #date-selector {
+  transition: all 0.5s ease;
 }
 </style>

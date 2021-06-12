@@ -56,8 +56,8 @@ export default class Navigation extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-#navigation {
+<style scoped>
+/* #navigation {
   padding: 15px;
 }
 .navbar {
@@ -71,9 +71,9 @@ export default class Navigation extends Vue {
       color: white;
     }
     // Navbar brand item.
-    .navbar-item {
+    .navbar-item { */
       /*font-weight: bold;*/
-      color: white;
+      /* color: white;
       &.router-link-exact-active {
         color: white;
         font-weight: bold;
@@ -117,7 +117,7 @@ export default class Navigation extends Vue {
     background-color: transparent;
     font-weight: bold;
   }
-}
+} */
 .positive {
   background-color: hsl(171, 100%, 41%);
 }

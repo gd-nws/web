@@ -90,8 +90,8 @@ export default class TitleView extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-.hero {
+<style scoped>
+/* .hero {
   transition: all 0.5s ease;
   color: white;
   min-height: 100%;
@@ -150,6 +150,6 @@ export default class TitleView extends Vue {
     .info-container {
       margin-top: 5%;
     }
-  }
-}
+  } */
+/* } */
 </style>

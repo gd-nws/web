@@ -59,7 +59,7 @@ export default class HeadlineView extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .actions {
   margin-bottom: 2.5%;
 }

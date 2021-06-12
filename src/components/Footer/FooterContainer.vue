@@ -54,12 +54,12 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .cookie-link {
   color: #e76a68;
+}
 
-  &hover {
-    color: white;
-  }
+.cookie-link:hover {
+  color: white;
 }
 </style>

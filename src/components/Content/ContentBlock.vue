@@ -18,10 +18,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class ContentBlock extends Vue {}
 </script>
 
-<style scoped lang="scss">
-#content-block {
-  p {
-    margin-bottom: 2.5%;
-  }
+<style scoped>
+#content-block.p {
+  margin-bottom: 2.5%;
 }
 </style>

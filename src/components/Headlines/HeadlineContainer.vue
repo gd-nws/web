@@ -78,29 +78,34 @@ export default class HeadlineContainer extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 a {
   color: black;
-  &hover {
-    color: black;
-  }
 }
-.card {
-  .image {
-    margin: 0;
-  }
 
-  img {
-    object-fit: cover;
-    max-width: 100%;
-    max-height: 50%;
-  }
+a:hover {
+  color: black;
+}
+
+.card .image {
+  margin: 0;
+}
+
+.card img {
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 50%;
+}
+
+.card {
   margin-bottom: 2.5%;
-  .origin {
-    text-transform: capitalize;
-  }
-  .no-image {
-    margin-bottom: 2.5%;
-  }
+}
+
+.card .origin {
+  text-transform: capitalize;
+}
+
+.card .no-image {
+  margin-bottom: 2.5%;
 }
 </style>

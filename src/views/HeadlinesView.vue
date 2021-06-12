@@ -107,8 +107,8 @@ export default class HeadlinesView extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
-#headlines-view {
+<style scoped>
+/* #headlines-view {
   padding-top: 2.5%;
   .selector {
     margin-bottom: 2.5%;
@@ -119,7 +119,7 @@ export default class HeadlinesView extends Vue {
   }
 
   .info {
-    padding: 2.5%;
-  }
-}
+    padding: 2.5%; */
+  /* } */
+/* } */
 </style>

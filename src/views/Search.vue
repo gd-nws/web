@@ -1,4 +1,5 @@
 import {Sentiment} from "@/store/headlines";
+
 <template lang="pug">
   div#search
     div.container.has-text-left
@@ -159,14 +160,15 @@ export default class Search extends Vue {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 #search {
   padding-top: 2.5%;
   padding-bottom: 2.5%;
-  .info {
-    padding-left: 2.5%;
-    padding-right: 2.5%;
-    margin-bottom: 2.5%;
-  }
+}
+
+.info {
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  margin-bottom: 2.5%;
 }
 </style>
