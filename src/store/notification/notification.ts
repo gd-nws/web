@@ -25,7 +25,7 @@ export const notification: {
       {
         message,
         messageLevel,
-        timeout
+        timeout = 500
       }: { message: string; messageLevel: MessageLevel; timeout?: number }
     ) => {
       if (context.state.timeout) {
@@ -36,11 +36,9 @@ export const notification: {
       context.commit("setMessageLevel", { messageLevel });
       context.commit("setVisibility", { isVisible: true });
 
-      if (timeout) {
-        context.state.timeout = setTimeout(() => {
-          context.commit("setVisibility", { isVisible: false });
-        }, timeout);
-      }
+      context.state.timeout = setTimeout(() => {
+        context.commit("setVisibility", { isVisible: false });
+      }, timeout);
     },
     closeNotification: (context: NotificationContext) => {
       context.commit("setVisibility", { isVisible: false });

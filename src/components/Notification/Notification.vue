@@ -1,40 +1,48 @@
 <template lang="pug">
   div#notification(
     v-show="isVisible"
+    :style="theme"
   )
-    div.notification.box.is-outlined(
-      :class="displayClass"
-    )
-      button.delete(
-        @click="close"
-      )
+    div
       p {{message}}
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { MessageLevel } from "@/store/notification";
+import { Theme } from "@/store/theme";
+
 @Component({})
 export default class Notification extends Vue {
+  get theme() {
+    return {
+      "--background": this.getNotificationColor()
+    };
+  }
   get isVisible() {
     return this.$store.getters.getNotificationVisibility;
   }
+
   get message() {
     return this.$store.getters.getNotificationMessage;
   }
+
   close() {
     this.$store.dispatch("closeNotification");
   }
-  get displayClass() {
-    const level = this.$store.getters.getNotificationLevel;
+
+  getNotificationColor(): string {
+    const level = this.$store.getters.getNotificationLevel as MessageLevel;
+    const theme = this.$store.getters.getTheme as Theme;
+
     switch (level) {
       case MessageLevel.Error:
-        return "is-danger";
+        return theme.colors.negative;
       case MessageLevel.Warning:
-        return "is-warn";
+        return "yellow";
       case MessageLevel.Info:
       default:
-        return "is-info";
+        return theme.colors.info;
     }
   }
 }
@@ -42,20 +50,14 @@ export default class Notification extends Vue {
 
 <style scoped>
 #notification {
+  background: var(--background);
+  border-radius: 15px;
+  color: white;
+  padding: 0.25em 1em;
+
   text-align: left;
   position: fixed;
-  left: 50%;
+  right: 2.5%;
   top: 5%;
-  transform: translate(-50%, -50%);
-}
-@media only screen and (max-width: 769px) {
-  #notification {
-    width: 50%;
-  }
-}
-@media only screen and (max-width: 700px) {
-  #notification {
-    width: 75%;
-  }
 }
 </style>
