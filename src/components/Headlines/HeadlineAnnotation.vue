@@ -3,7 +3,7 @@
     Button(
       :isDisabled="vote !== undefined",
       @button-clicked="handleAnnotation(sentiments.POSITIVE)",
-      :isLight="!isPositive",
+      :isActive="isPositive",
       :messageLevel="messageLevels.primary",
     )
       span.icon
@@ -12,23 +12,23 @@
       :isDisabled="vote !== undefined",
       @button-clicked="handleAnnotation(sentiments.NEGATIVE)",
       :messageLevel="messageLevels.error",
-      :isLight="!isNegative"
+      :isActive="isNegative"
     )
       span.icon
         i.far.fa-thumbs-down
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { sentimentValues } from "@/store/headlines";
+import { Headline, sentimentValues } from "@/store/headlines";
 import { MessageLevel } from "@/store/notification";
-import Button from "@/components/Button/Button";
+import Button from "@/components/Button/Button.vue";
 
 @Component({
   components: { Button }
 })
 export default class HeadlineAnnotation extends Vue {
-  @Prop(Number) headlineId;
+  @Prop(Object) headline: Headline | undefined = undefined;
 
   get isPositive() {
     return this.vote === 1;
@@ -43,14 +43,17 @@ export default class HeadlineAnnotation extends Vue {
   }
 
   get vote() {
-    const annotation = this.$store.getters.getAnnotations.find(
-      annotation => annotation.headlineId === this.headlineId
-    );
-
-    if (!annotation) {
+    if (!this.headline) {
       return undefined;
     }
-    return annotation.vote;
+
+    const { annotations } = this.headline;
+    if (annotations.length) {
+      const [{ vote }] = annotations;
+      return vote;
+    }
+
+    return undefined;
   }
 
   get messageLevels() {
@@ -60,14 +63,18 @@ export default class HeadlineAnnotation extends Vue {
     };
   }
 
-  async handleAnnotation(annotation) {
+  async handleAnnotation(annotation: string) {
+    if (!this.headline) {
+      return;
+    }
+
     await this.$store.dispatch("annotateHeadline", {
       annotation,
-      headlineId: this.headlineId
+      headlineId: this.headline.id
     });
 
-    const eventPayload = {};
-    eventPayload[annotation] = this.headlineId;
+    const eventPayload: { [k: string]: string | undefined } = {};
+    eventPayload[annotation] = this.headline.id;
     this.$gtag.event("annotate", { method: annotation });
   }
 }

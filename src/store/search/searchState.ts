@@ -9,3 +9,13 @@ export interface SearchState {
   sentiment: Sentiment;
   isAllSearchHeadlines: boolean;
 }
+
+export const initialState: SearchState = {
+  term: undefined,
+  headlines: [],
+  page: 1,
+  limit: 10,
+  count: 0,
+  sentiment: Sentiment.POSITIVE,
+  isAllSearchHeadlines: false
+};

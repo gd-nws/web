@@ -1,10 +1,10 @@
 <template lang="pug">
-    div#headlines-view.has-text-left
-        div.container
-            div.columns.info
-              div.column.is-narrow
+    div#headlines-view
+        Container
+            div.headline-filter-wrapper
+              div.date
                 h3.is-size-3 {{headlineDate}}
-              div.column.has-text-left
+              div
                 HeadlineFilters(
                   :startDate="selectedDate",
                   @date-changed="handleDateChange($event)"
@@ -27,19 +27,20 @@
             div.content(
               v-else
             )
-              section.section
+              section
                 h3.is-size-3 No headlines found for {{headlineDate}}!
 </template>
 
 <script lang="ts">
 import HeadlineContainer from "@/components/Headlines/HeadlineContainer.vue";
 import HeadlineFilters from "@/components/Headlines/HeadlineFilters.vue";
+import Container from "@/components/Container/Container.vue";
 
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { Route } from "vue-router";
 
 @Component({
-  components: { HeadlineFilters, HeadlineContainer }
+  components: { HeadlineFilters, HeadlineContainer, Container }
 })
 export default class HeadlinesView extends Vue {
   selectedDate: string = new Date().toISOString().split("T")[0];
@@ -108,18 +109,28 @@ export default class HeadlinesView extends Vue {
 </script>
 
 <style scoped>
-/* #headlines-view {
-  padding-top: 2.5%;
-  .selector {
-    margin-bottom: 2.5%;
-  }
+.headline-filter-wrapper {
+  align-items: center;
+  display: flex;
+}
 
-  .load-more {
-    margin-bottom: 2.5%;
-  }
+#headlines-view {
+  padding: 2.5% 0;
+}
 
-  .info {
-    padding: 2.5%; */
-  /* } */
-/* } */
+.date {
+  flex: 1;
+}
+
+.selector {
+  margin-bottom: 2.5%;
+}
+
+.load-more {
+  margin-bottom: 2.5%;
+}
+
+.info {
+  padding: 2.5%;
+}
 </style>

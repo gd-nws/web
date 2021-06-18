@@ -1,6 +1,6 @@
 <template lang="pug">
-  div#about.has-text-left
-    div.container
+  div#about
+    Container
       h3.title About
       div.content
         ContentBlock
@@ -51,9 +51,10 @@
 <script>
 import { Component, Vue } from "vue-property-decorator";
 import ContentBlock from "../components/Content/ContentBlock";
+import Container from "../components/Container/Container.vue";
 
 @Component({
-  components: { ContentBlock }
+  components: { ContentBlock, Container }
 })
 export default class About extends Vue {}
 </script>

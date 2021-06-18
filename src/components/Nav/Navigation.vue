@@ -2,7 +2,7 @@
   div#navigation(
     :class="{positive: isPositive, negative: !isPositive}"
   )
-    div.container
+    Container
       nav.navbar(
         role="navigation"
         aria-label="main navigation"
@@ -44,7 +44,9 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import { sentimentValues } from "@/store/headlines";
-@Component({})
+import Container from "@/components/Container/Container.vue";
+
+@Component({ components: { Container } })
 export default class Navigation extends Vue {
   private isExpanded: boolean = false;
   get isPositive() {
@@ -57,67 +59,73 @@ export default class Navigation extends Vue {
 </script>
 
 <style scoped>
-/* #navigation {
-  padding: 15px;
+#navigation {
+  padding: 1.5% 0;
 }
+
 .navbar {
+  display: flex;
+}
+
+.navbar-start {
+  text-align: left;
+}
+
+#navbar-content {
+  flex: 1;
   background-color: transparent;
-  &hover {
-    background-color: transparent;
+  color: white;
+}
+
+.navbar-item {
+  color: white;
+  margin: 1em;
+  text-decoration: none;
+}
+
+.router-link-exact-active {
+  color: white;
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.router-link-active {
+  background-color: transparent;
+}
+
+#navbar-content.is-active {
+  box-shadow: none;
+  text-align: left;
+  border-bottom: white solid 1px;
+
+  @media only screen and (min-width: 1024px) {
+    border-bottom: none;
   }
-  .navbar-brand {
-    background-color: transparent;
-    .burger {
-      color: white;
-    }
-    // Navbar brand item.
-    .navbar-item { */
-      /*font-weight: bold;*/
-      /* color: white;
-      &.router-link-exact-active {
-        color: white;
-        font-weight: bold;
-      }
-    }
-  }
-  #navbar-content {
-    background-color: transparent;
-    color: white;
-    &.is-active {
-      box-shadow: none;
-      text-align: left;
-      border-bottom: white solid 1px;
-      @media only screen and (min-width: 1024px) {
-        border-bottom: none;
-      }
-    }
-    .navbar-start {
-      .navbar-item {
-        color: white;
-        .router-link-active {
-          background-color: transparent;
-        }
-        &.router-link-exact-active {
-          color: white;
-          background-color: transparent;
-          font-weight: bold;
-        }
-      }
-    }
-  }
-  a.navbar-item:hover {
-    background-color: transparent;
-    font-weight: bold;
-  }
-  a.navbar-item:focus {
-    background-color: transparent;
-    font-weight: bold;
-  }
-  a.navbar-item:focus-within {
-    background-color: transparent;
-    font-weight: bold;
-  }
-} */
+}
+
+.navbar:hover {
+  background-color: transparent;
+}
+
+.burger {
+  color: white;
+}
+
+.navbar-item:hover {
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.navbar-item:focus {
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.navbar-item:focus-within {
+  background-color: transparent;
+  font-weight: bold;
+}
+
 .positive {
   background-color: hsl(171, 100%, 41%);
 }

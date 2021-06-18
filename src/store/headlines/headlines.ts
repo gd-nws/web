@@ -1,4 +1,3 @@
-import { HeadlineAPI } from "@/api/HeadlineAPI";
 import { State } from "@/store/state";
 import { ActionContext } from "vuex";
 import {
@@ -6,8 +5,10 @@ import {
   HeadlineState,
   Sentiment
 } from "@/store/headlines/headlineState";
+import actions from "./actions";
+import { initialState } from "./headlineState";
 
-type HeadlineContext = ActionContext<HeadlineState, State>;
+export type HeadlineContext = ActionContext<HeadlineState, State>;
 
 export const sentimentValues = {
   POSITIVE: "positive",
@@ -20,77 +21,8 @@ export const headlines: {
   mutations: any;
   getters: any;
 } = {
-  state: {
-    headlines: [],
-    sentiment: Sentiment.POSITIVE,
-    lastDate: new Date(),
-    limit: 10,
-    page: 1,
-    isAllHeadlines: false,
-    selectedHeadline: undefined
-  },
-
-  actions: {
-    fetchHeadlines: async (context: HeadlineContext) => {
-      const headlineAPI = new HeadlineAPI();
-      const limit = context.getters.getHeadlineLimit;
-      const page = context.getters.getHeadlinePage;
-      const { count, headlines } = await headlineAPI.getHeadlines(
-        context.getters.getSentiment,
-        limit,
-        page,
-        context.getters.getLastHeadlineDate
-      );
-
-      if (count < page * limit) {
-        context.commit("setIsAllHeadlines", { isAllHeadlines: true });
-      }
-
-      context.commit("updateHeadlines", headlines);
-      context.commit("incrementHeadlinePage");
-    },
-
-    updateHeadlineContext: async (
-      context: HeadlineContext,
-      {
-        sentiment,
-        date
-      }: {
-        sentiment: Sentiment;
-        date?: Date;
-      }
-    ): Promise<void> => {
-      const s = Object.values(Sentiment).includes(sentiment);
-      if (!s) {
-        return;
-      }
-
-      if (!date) {
-        date = new Date();
-      }
-
-      context.commit("setSentiment", sentiment);
-      context.commit("setTitle", { sentiment });
-      context.commit("resetHeadlinePage");
-      context.commit("clearHeadlines");
-      context.commit("setIsAllHeadlines", { isAllHeadlines: false });
-      context.commit("setDate", { date });
-
-      await context.dispatch("fetchHeadlines");
-    },
-
-    fetchHeadline: async (context: HeadlineContext, { id }: { id: number }) => {
-      let headline;
-      try {
-        headline = await new HeadlineAPI().getHeadline(id);
-      } catch (error) {
-        // TODO: Handle error.
-      }
-
-      context.commit("setSelectedHeadline", { headline });
-    }
-  },
-
+  state: initialState,
+  actions,
   mutations: {
     updateHeadlines: (state: HeadlineState, headlines: Headline[]): void => {
       state.headlines = state.headlines.concat(headlines);
@@ -125,6 +57,10 @@ export const headlines: {
   },
 
   getters: {
+    getHeadline: (state: HeadlineState) => (
+      headlineId: string
+    ): Headline | undefined =>
+      (state.headlines || []).find(({ id }) => id === headlineId),
     getHeadlines: (state: HeadlineState): Headline[] => state.headlines,
     getSentiment: (state: HeadlineState): string => state.sentiment,
     getHeadlineLimit: (state: HeadlineState): number => state.limit,

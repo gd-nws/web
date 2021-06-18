@@ -1,12 +1,13 @@
 export interface Headline {
   headline: string;
-  id: number;
+  id: string;
   origin: string;
   displayImagePath: string;
   link: string;
   publishedAt: Date;
   semanticValue: string;
   predictedClass: number;
+  annotations: { vote: number; createdAt: Date }[];
 }
 
 export interface HeadlineState {
@@ -23,3 +24,13 @@ export enum Sentiment {
   POSITIVE = "positive",
   NEGATIVE = "negative"
 }
+
+export const initialState: HeadlineState = {
+  headlines: [],
+  sentiment: Sentiment.POSITIVE,
+  lastDate: new Date(),
+  limit: 10,
+  page: 1,
+  isAllHeadlines: false,
+  selectedHeadline: undefined
+};

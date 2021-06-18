@@ -1,8 +1,8 @@
 <template lang="pug">
   div#footer-container
     footer.footer
-      div.container
-        div.content.has-text-centered
+      Container
+        div.content
           p
             strong Good News! &nbsp;
             | by &nbsp;
@@ -48,9 +48,10 @@
 
 <script>
 import CookieLaw from "vue-cookie-law";
+import Container from "@/components/Container/Container.vue";
 export default {
   name: "FooterContainer",
-  components: { CookieLaw }
+  components: { CookieLaw, Container }
 };
 </script>
 
@@ -61,5 +62,9 @@ export default {
 
 .cookie-link:hover {
   color: white;
+}
+
+.content {
+  text-align: center;
 }
 </style>

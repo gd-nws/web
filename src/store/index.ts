@@ -6,9 +6,18 @@ import { session } from "@/store/session";
 import { annotations } from "@/store/annotations";
 import { notification } from "@/store/notification";
 import { search } from "@/store/search/search";
+import { theme } from "@/store/theme/";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: { annotations, content, headlines, notification, search, session }
+  modules: {
+    annotations,
+    content,
+    headlines,
+    notification,
+    search,
+    session,
+    theme
+  }
 });

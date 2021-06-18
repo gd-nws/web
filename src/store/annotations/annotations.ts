@@ -47,20 +47,6 @@ export const annotations = {
   },
 
   actions: {
-    fetchSessionAnnotations: async (context: AnnotationsContext) => {
-      const sessionToken = context.getters.getSession;
-      if (!sessionToken) {
-        return;
-      }
-
-      const annotationsAPI = new AnnotationsAPI();
-      const annotations = await annotationsAPI.getAnnotationsForSessions(
-        sessionToken
-      );
-
-      context.commit("setAnnotations", { annotations });
-    },
-
     annotateHeadline: async (
       context: AnnotationsContext,
       payload: { annotation: string; headlineId: number }

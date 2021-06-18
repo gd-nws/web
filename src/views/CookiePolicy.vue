@@ -1,6 +1,6 @@
 <template lang="pug">
-  div#cookie-policy.has-text-left
-    div.container
+  div#cookie-policy
+    Container
       h3.title Cookie Policy
       div.content
         div
@@ -76,9 +76,10 @@
 
 <script>
 import ContentBlock from "../components/Content/ContentBlock";
+import Container from "../components/Container/Container.vue";
 export default {
   name: "CookiePolicy",
-  components: { ContentBlock }
+  components: { ContentBlock, Container }
 };
 </script>
 

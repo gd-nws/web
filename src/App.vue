@@ -1,5 +1,7 @@
 <template lang="pug">
-  div#app
+  div#app(
+    :style="theme"
+  )
     Navigation
     TitleContainer
     router-view
@@ -9,22 +11,38 @@
 
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
+  transition: var(--transition);
+}
+
+a {
+  color: var(--colors-info);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--colors-info-dark);
+}
+
+body {
+  margin: 0;
 }
 </style>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import TitleContainer from "@/components/Title/TitleContainer";
-import Navigation from "@/components/Nav/Navigation";
-import FooterContainer from "@/components/Footer/FooterContainer";
+import TitleContainer from "@/components/Title/TitleContainer.vue";
+import Navigation from "@/components/Nav/Navigation.vue";
+import FooterContainer from "@/components/Footer/FooterContainer.vue";
 import { Sentiment } from "@/store/headlines";
-import Notification from "@/components/Notification/Notification";
+import Notification from "@/components/Notification/Notification.vue";
+import { Theme } from "./store/theme";
 
 const metaDataDescription =
   "A machine learning approach to sorting headlines by the positivity or negativity.";
@@ -53,9 +71,9 @@ const metaDataDescription =
 export default class App extends Vue {
   async mounted() {
     await this.$store.dispatch("fetchSession");
-    await this.$store.dispatch("fetchSessionAnnotations");
+    const path = this.$route.path;
 
-    if (this.$route.path === "/") {
+    if (path === "/") {
       await this.$router.push({
         path: "/headlines",
         query: {
@@ -64,6 +82,16 @@ export default class App extends Vue {
         }
       });
     }
+  }
+
+  get theme() {
+    const theme = this.$store.getters.getTheme as Theme;
+    return {
+      "--colors-info": theme.colors.info,
+      "--colors-info-dark": theme.colors.infoDark,
+      "--transition": theme.transition,
+      "--font": theme.font
+    };
   }
 }
 </script>

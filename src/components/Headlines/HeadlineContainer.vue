@@ -1,46 +1,36 @@
-<template lang="pug">
-  div#headline-container
-    div.card
-      div.card-content
-        div.content
-          a(
-            :href="headline.link",
-            target="_blank"
-          )
-            div.columns.is-vcentered(
-              v-if="headline.displayImagePath"
-            )
-              div.column.is-one-third
-                figure.image.container
-                  img(
-                    :src="headline.displayImagePath",
-                    alt="Placeholder images"
-                  )
-              div.column
-                p.is-size-5 {{headline.headline}}
-            div(
-              v-else
-            )
-              p.is-size-5.no-image {{headline.headline}}
-            div.columns.is-vcentered.is-mobile
-              div.column.is-two-thirds
-                p.origin {{origin}}
-                  |
-                  br
-                  | {{publishedAt}}
-              div.column.has-text-right
-                p.is-size-5 {{headline.semanticValue}}
-          div.columns.is-mobile
-            div.column
-              HeadlineAnnotation(
-                :headlineId="headline.id",
-              )
-            div.column.has-text-right
-              ShareHeadline(
-                :id="headline.id",
-                :title="headline.headline",
-                :predictedClass="predictedClass"
-              )
+<template>
+  <div id="headline-container">
+    <div class="card">
+      <div class="image-and-headline">
+        <div class="image-container" v-show="headline.displayImagePath">
+          <img :src="headline.displayImagePath" alt="Placeholder images" />
+        </div>
+        <div class="flex">
+          <a :href="headline.link" target="_blank" class="headline">{{
+            headline.headline
+          }}</a>
+        </div>
+      </div>
+      <div class="origin-sentiment-wrapper">
+        <p class="origin">
+          {{ origin }}
+          <br />
+          {{ publishedAt }}
+        </p>
+        <p class="sentiment-value">
+          {{ headline.semanticValue }}
+        </p>
+      </div>
+      <div class="headline-actions">
+        <headline-annotation class="annotate-actions" :headline="headline" />
+        <share-headline
+          :id="headline.id"
+          :title="headline.headline"
+          :predictedClass="predictedClass"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -50,7 +40,10 @@ import HeadlineAnnotation from "./HeadlineAnnotation.vue";
 import ShareHeadline from "./ShareHeadline.vue";
 
 @Component({
-  components: { ShareHeadline, HeadlineAnnotation }
+  components: {
+    "share-headline": ShareHeadline,
+    "headline-annotation": HeadlineAnnotation
+  }
 })
 export default class HeadlineContainer extends Vue {
   @Prop() headline?: Headline;
@@ -79,33 +72,78 @@ export default class HeadlineContainer extends Vue {
 </script>
 
 <style scoped>
+.card {
+  border: 1px #ccc solid;
+  border-radius: 5px;
+  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%),
+    0 0 0 1px rgb(10 10 10 / 2%);
+  padding: 2.5%;
+  margin-bottom: 2.5%;
+}
+
+.flex {
+  display: flex;
+}
+
 a {
   color: black;
+  text-decoration: none;
 }
 
 a:hover {
   color: black;
 }
 
-.card .image {
-  margin: 0;
+@media only screen and (max-width: 1000px) {
+  .image-and-headline {
+    flex-direction: column;
+  }
+
+  .image-container {
+    min-width: 100%;
+  }
 }
 
-.card img {
-  object-fit: cover;
-  max-width: 100%;
-  max-height: 50%;
+.image-and-headline {
+  align-items: center;
+  display: flex;
+  width: 100%;
 }
 
-.card {
-  margin-bottom: 2.5%;
+.image-container {
+  max-width: 40%;
 }
 
-.card .origin {
+img {
+  width: 100%;
+}
+
+.headline {
+  padding: 1em;
+}
+
+.origin-sentiment-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.origin {
+  flex: 1;
+  text-align: left;
   text-transform: capitalize;
 }
 
-.card .no-image {
-  margin-bottom: 2.5%;
+.sentiment-value {
+  text-align: right;
+}
+
+.headline-actions {
+  display: flex;
+}
+
+.annotate-actions {
+  flex: 1;
+  text-align: left;
 }
 </style>

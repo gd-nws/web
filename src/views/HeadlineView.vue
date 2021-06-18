@@ -1,6 +1,6 @@
 <template lang="pug">
   div#headline-view.has-text-left
-    div.container
+    Container
       section.section
         div.actions.has-text-right
           Button(
@@ -25,9 +25,10 @@ import HeadlineContainer from "@/components/Headlines/HeadlineContainer";
 import Button from "@/components/Button/Button";
 import { Sentiment } from "@/store/headlines";
 import { MessageLevel } from "@/store/notification";
+import Container from "../components/Container/Container.vue";
 
 @Component({
-  components: { Button, HeadlineContainer }
+  components: { Button, HeadlineContainer, Container }
 })
 export default class HeadlineView extends Vue {
   get headline() {
@@ -62,5 +63,9 @@ export default class HeadlineView extends Vue {
 <style scoped>
 .actions {
   margin-bottom: 2.5%;
+}
+
+.section {
+  padding: 5% 0;
 }
 </style>

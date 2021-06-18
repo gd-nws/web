@@ -2,20 +2,20 @@ import {Sentiment} from "@/store/headlines";
 
 <template lang="pug">
   div#search
-    div.container.has-text-left
+    Container
       div.info
-        div.columns.is-mobile
-          div.column.is-narrow
-            h3.is-size-3 Search Headlines
+        div.title-wrapper
+          div
+            h3.title Search Headlines
           div.column.has-text-right
             Button(
               @button-clicked="closeSearch"
             )
               span.icon
                 i.fas.fa-times
-        div.field.has-addons
-          div.control.is-expanded
-            input.input(
+        div.controls
+          div.search-input-wrapper
+            input.search-input(
               type="text",
               placeholder="Search",
               v-model="term",
@@ -59,9 +59,10 @@ import { Sentiment } from "@/store/headlines";
 import HeadlineContainer from "@/components/Headlines/HeadlineContainer.vue";
 import { Route } from "vue-router";
 import { MessageLevel } from "@/store/notification";
+import Container from "@/components/Container/Container.vue";
 
 @Component({
-  components: { HeadlineContainer, Button }
+  components: { HeadlineContainer, Button, Container }
 })
 export default class Search extends Vue {
   term: string | undefined = "";
@@ -170,5 +171,36 @@ export default class Search extends Vue {
   padding-left: 2.5%;
   padding-right: 2.5%;
   margin-bottom: 2.5%;
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+}
+.search-input-wrapper {
+  flex: 1;
+  padding-right: 1.5em;
+}
+
+.search-input {
+  border: 1px #ccc solid;
+  border-radius: 5px;
+  padding: 0.5em;
+  width: 100%;
+}
+
+.title-wrapper {
+  align-items: center;
+  display: flex;
+  width: 100%;
+}
+
+.has-text-right {
+  text-align: right;
+  flex: 1;
+}
+
+.title {
+  flex: 1;
 }
 </style>

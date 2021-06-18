@@ -1,47 +1,46 @@
 <template lang="pug">
   div#headline-filters
-    div.field.has-addons(
-      :class="{'has-addons-right': windowWidth > mobileWidth}"
+    div.date-picker-wrapper(
+      v-if="isDatePickerActive"
     )
-      div.control(
-        v-if="isDatePickerActive"
+      input.date-picker(
+        type="date",
+        :value="startDate",
+        :max="today",
+        @input="handleChange($event.target.value)"
       )
-        input.input(
-          type="date",
-          :value="startDate",
-          :max="today",
-          @input="handleChange($event.target.value)"
-        )
-      div.control
-        Button.date-selector-container(
-          @button-clicked="handleCalendar"
-        )
-          span.icon
-            i.far.fa-calendar-alt
-      div.control
-        Button(
-          :messageLevel="messageLevel.Primary",
-          :is-outlined="!isPositive",
-          @button-clicked="sentimentSelected(sentiments.POSITIVE)"
-        )
-          span.icon
-            i.fas.fa-sort-amount-down
-      div.control
-        Button(
-          :messageLevel="messageLevel.Error",
-          :is-outlined="isPositive",
-          @button-clicked="sentimentSelected(sentiments.NEGATIVE)"
-        )
-          span.icon
-            i.fas.fa-sort-amount-up
-      div.control
-        Button(
-          @button-clicked="handleSearch"
-        )
-          span.icon
-            i.fas.fa-search(
-              v-if=""
-            )
+    div
+      Button(
+        @button-clicked="handleCalendar"
+        :isActive="isDatePickerActive"
+      )
+        span.icon
+          i.far.fa-calendar-alt
+    div
+      Button(
+        :messageLevel="messageLevel.Primary",
+        :is-outlined="!isPositive",
+        @button-clicked="sentimentSelected(sentiments.POSITIVE)"
+      )
+        span.icon
+          i.fas.fa-sort-amount-down
+    div
+      Button(
+        :messageLevel="messageLevel.Error",
+        :is-outlined="isPositive",
+        @button-clicked="sentimentSelected(sentiments.NEGATIVE)"
+      )
+        span.icon
+          i.fas.fa-sort-amount-up
+    div
+      Button(
+        :messageLevel="messageLevel.Info",
+        @button-clicked="handleSearch"
+      )
+        span.icon
+          i.fas.fa-search(
+            v-if=""
+          )
 </template>
 
 <script lang="ts">
@@ -52,11 +51,12 @@ import { Sentiment, sentimentValues } from "@/store/headlines";
 
 @Component({ components: { Button } })
 export default class HeadlineFilters extends Vue {
-  today = new Date().toISOString().split("T")[0];
   @Prop() startDate?: string;
+  private isDatePickerActive: boolean = false;
+
+  today = new Date().toISOString().split("T")[0];
   selectedDate = this.startDate || this.today;
   windowWidth: number = 0;
-  private isDatePickerActive: boolean = false;
   mobileWidth: number = 768;
 
   get date() {
@@ -125,5 +125,14 @@ export default class HeadlineFilters extends Vue {
 
 #headline-date #date-selector {
   transition: all 0.5s ease;
+}
+
+#headline-filters {
+  display: flex;
+}
+
+.date-picker-wrapper {
+  display: flex;
+  align-items: center;
 }
 </style>

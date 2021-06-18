@@ -10,7 +10,7 @@
     )
       span.icon
         i.fas.fa-link
-    Button#twitter-share(
+    Button.twitter-share(
       :messageLevel="messageLevels.info"
       @button-clicked="shareToTwitter"
     )
@@ -86,12 +86,13 @@ export default class ShareHeadline extends Vue {
 </script>
 
 <style scoped>
-#share-headline button {
+/* #share-headline {
   margin-top: 1%;
-}
+} */
 
-#twitter-share {
+.twitter-share {
   background-color: #00aced;
+  color: white;
 }
 
 #hidden-link {
