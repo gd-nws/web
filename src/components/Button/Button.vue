@@ -12,9 +12,8 @@
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
 import { MessageLevel } from "@/store/notification";
 import { Theme } from "@/store/theme";
-import { myMixin } from "../../mixins/theme";
 
-@Component({ mixins: [myMixin] })
+@Component({})
 export default class Button extends Vue {
   @Prop() isLoading: boolean | undefined;
   @Prop() messageLevel: MessageLevel | undefined;
